@@ -52,10 +52,10 @@ def menu(funcoes, lista, lista_log):
                 listarTodos(lista)
             case 4:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Listar disponíveis')
+                listarDisponivel(lista)
             case 5:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Listar indisponíveis')
+                listarIndisponivel(lista)
             case 6:
                 registrarLog(funcoes[opcao], lista_log)
                 print('Atualizar')
@@ -136,7 +136,7 @@ def buscarPorNome(lista):
             resultados.append(item)
 
     if (len(resultados) > 0):
-        print(f"--Ocorrências encontradas")
+        print(f"--Ocorrências encontradas--")
 
         for item in resultados:
             listarUnico(item)
@@ -147,11 +147,38 @@ def listarTodos(lista):
     for item in lista:
         listarUnico(item)
 
+def listarDisponivel(lista):
+    print(f'--Todos os {escopo}s disponíveis--')
+    resultados = []
+
+    for item in lista:
+        if item['disponibilidade'] == True:
+            resultados.append(item)
+
+    if len(resultados) > 0:
+        print(f'--Ocorrências encontradas--')
+
+        for item in resultados:
+            listarUnico(item)
+
+def listarIndisponivel(lista):
+    print(f'--Todos os {escopo}s indisponíveis--')
+    resultados = []
+
+    for item in lista:
+        if item['disponibilidade'] is not True:
+            resultados.append(item)
+
+    if len(resultados) > 0:
+        print(f'--Ocorrências encontradas--')
+
+        for item in resultados:
+            listarUnico(item)
+
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
 
     for item in lista_log:
         print(item)
-
 
 menu(functions, carros, log)
