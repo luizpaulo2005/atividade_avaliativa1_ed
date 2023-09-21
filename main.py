@@ -13,7 +13,7 @@ log = []
 functions = [
     "Sair",
     f"Cadastrar {escopo}",
-    f"Buscar {escopo} por {atributos[0]}",
+    f"Buscar {escopo} por {atributos[1]}",
     f"Listar todos {escopo}s",
     f"Listar todos {escopo}s disponíveis",
     f"Listar todos {escopo}s indisponíveis",
@@ -46,7 +46,7 @@ def menu(funcoes, lista, lista_log):
                 cadastrar(lista)
             case 2:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Buscar')
+                buscarPorNome(lista)
             case 3:
                 registrarLog(funcoes[opcao], lista_log)
                 listarTodos(lista)
@@ -113,10 +113,7 @@ def cadastrar(lista):
     lista.append(carro)
     print(f'{escopo} cadastrado com sucesso!')
 
-def listarTodos(lista):
-    print(f'--Todos os {escopo}s cadastrados--')
-    
-    for item in lista:
+def listarUnico(item):
         print('-' * 10)
         print(f"ID - {item['id']}")
         print(f"Modelo - {item['modelo']}")
@@ -128,7 +125,27 @@ def listarTodos(lista):
         else:
             print(f"Disponibilidade - Não")
 
+def buscarPorNome(lista):
+    print(f"--Buscar {escopo} por {atributos[1]}--")
+    resultados = []
 
+    modelo = input("Digite o modelo desejado: ")
+
+    for item in lista:
+        if (modelo.lower() in item['modelo'].lower()):
+            resultados.append(item)
+
+    if (len(resultados) > 0):
+        print(f"--Ocorrências encontradas")
+
+        for item in resultados:
+            listarUnico(item)
+
+def listarTodos(lista):
+    print(f'--Todos os {escopo}s cadastrados--')
+    
+    for item in lista:
+        listarUnico(item)
 
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
