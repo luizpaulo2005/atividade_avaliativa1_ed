@@ -35,7 +35,7 @@ def menu(funcoes, lista, lista_log):
         for item in funcoes:
             print(f"{funcoes.index(item)} - {item}")
 
-        opcao = int(input("\nEscolha a opção desejada: "))
+        opcao = int(input("\n>>Escolha a opção desejada: "))
         
         match opcao:
             case 0:
@@ -58,10 +58,10 @@ def menu(funcoes, lista, lista_log):
                 listarIndisponivel(lista)
             case 6:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Atualizar')
+                atualizarCarro(lista)
             case 7:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Excluir')
+                excluirCarro(lista)
             case 8:
                 registrarLog(funcoes[opcao], lista_log)
                 print('Média de valor')
@@ -86,6 +86,12 @@ def menu(funcoes, lista, lista_log):
             case _:
                 registrarLog('Opção Inválida', lista_log)
                 print("Opção inválida!")
+
+def itemExistente(valor, lista):
+    disponivel = False
+    for item in lista:
+        if valor == item['id']:
+            disponivel == True
 
 def registrarLog(funcao, lista_log):
     data = datetime.today().strftime('%d/%m/%Y %H:%M:%S')
@@ -175,10 +181,59 @@ def listarIndisponivel(lista):
         for item in resultados:
             listarUnico(item)
 
+def atualizarCarro(lista):
+    print(f'-- Atualizar {escopo}')
+    listarTodos(lista)
+    id = input('Informe o id que deseja atualizar: ')
+    existente = itemExistente(id, lista)
+    if existente == True:
+        print('Para manter dado atual, deixe o campo vazio')
+        modelo = input("Digite o modelo do carro: ")
+        marca = input("Digite a marca do carro: ")
+        ano = int(input("Digite o ano do carro: "))
+        valor = float(input("Digite o valor do carro: "))
+        disponibilidade = input("Digite a disponibilidade do carro (Sim / Não): ").lower().strip() == 'sim'
+
+        if modelo != '':
+            lista[id]['modelo'] = modelo
+
+        if marca != '':
+            lista[id]['marca'] = marca
+        
+        if ano != '':
+            lista[id]['ano'] = ano
+
+        if valor != '':
+            lista[id]['valor'] = valor
+        
+        if disponibilidade != lista[id]['disponibilidade']:
+            lista[id]['disponibilidade'] = disponibilidade
+
+    print('Item atualizado com sucesso!')
+
+def excluirCarro(lista):
+    print(f'--Excluir {escopo}')
+    listarTodos(lista)
+    id = input('Informe o id que deseja excluir: ')
+    existente = itemExistente(id, lista)
+    if existente:
+        for item in lista:
+            if id == item['id']:
+                lista.remove(item)
+
+    print('Item excluido com sucesso!')
+        
+
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
 
     for item in lista_log:
         print(item)
+
+
+
+
+
+
 
 menu(functions, carros, log)
