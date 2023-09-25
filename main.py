@@ -64,7 +64,7 @@ def menu(funcoes, lista, lista_log):
                 excluirCarro(lista)
             case 8:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Média de valor')
+                mediaValor(lista)
             case 9:
                 registrarLog(funcoes[opcao], lista_log)
                 print('Mais caro')
@@ -76,7 +76,7 @@ def menu(funcoes, lista, lista_log):
                 print('Contagem de carros')
             case 12:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Busca por ')
+                print(f'Busca por {atributos[1]}, {atributos[2]}')
             case 13:
                 registrarLog(funcoes[opcao], lista_log)
                 visualizarLog(lista_log)
@@ -239,16 +239,32 @@ def excluirCarro(lista):
 
     if not isEmpty:
         listarTodos(lista)
-        idd = input('Digite o ID que deseja excluir: ')
-        for item in lista:
-            if idd == item['id']:
-                lista.remove(item)
-                print(f'{escopo} excluído com sucesso!')
-                isDeleted = True
+        idd = input('Digite o ID que deseja excluir(vazio para cancelar): ')
+        if idd.strip() != "":
+            for item in lista:
+                if idd == item['id']:
+                    lista.remove(item)
+                    print(f'{escopo} excluído com sucesso!')
+                    isDeleted = True
 
-        if not isDeleted:
-            print('ID não alterado/encontrado')
+            if not isDeleted:
+                print('ID não alterado/encontrado')
         
+def mediaValor(lista):
+    print(f'--Média de valores de {escopo}--')
+
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        soma = 0
+
+        for item in lista:
+            soma += item['valor']
+
+        media = soma / len(lista)
+
+        print(f'A média de valores dos R${escopo}s é de {media}')
+
 
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
