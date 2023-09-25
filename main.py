@@ -87,11 +87,12 @@ def menu(funcoes, lista, lista_log):
                 registrarLog('Opção Inválida', lista_log)
                 print("Opção inválida!")
 
-def itemExistente(valor, lista):
-    disponivel = False
-    for item in lista:
-        if valor == item['id']:
-            disponivel == True
+def verificaLista(lista):
+    if len(lista) <= 0:
+        print("A lista está vazia!")
+        return True
+    else:
+        return False
 
 def registrarLog(funcao, lista_log):
     data = datetime.today().strftime('%d/%m/%Y %H:%M:%S')
@@ -135,93 +136,118 @@ def buscarPorNome(lista):
     print(f"--Buscar {escopo} por {atributos[1]}--")
     resultados = []
 
-    modelo = input("Digite o modelo desejado: ")
+    isEmpty = verificaLista(lista)
 
-    for item in lista:
-        if (modelo.lower() in item['modelo'].lower()):
-            resultados.append(item)
+    if not isEmpty:
+        modelo = input("Digite o modelo desejado: ")
 
-    if (len(resultados) > 0):
-        print(f"--Ocorrências encontradas--")
+        for item in lista:
+            if (modelo.lower() in item['modelo'].lower()):
+                resultados.append(item)
 
-        for item in resultados:
-            listarUnico(item)
+        if (len(resultados) > 0):
+            print(f"--Ocorrências encontradas--")
+
+            for item in resultados:
+                listarUnico(item)
 
 def listarTodos(lista):
     print(f'--Todos os {escopo}s cadastrados--')
     
-    for item in lista:
-        listarUnico(item)
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        for item in lista:
+            listarUnico(item)
 
 def listarDisponivel(lista):
     print(f'--Todos os {escopo}s disponíveis--')
     resultados = []
 
-    for item in lista:
-        if item['disponibilidade'] == True:
-            resultados.append(item)
+    isEmpty = verificaLista(lista)
 
-    if len(resultados) > 0:
-        print(f'--Ocorrências encontradas--')
+    if not isEmpty:
+        for item in lista:
+            if item['disponibilidade'] == True:
+                resultados.append(item)
 
-        for item in resultados:
-            listarUnico(item)
+        if len(resultados) > 0:
+            print(f'--Ocorrências encontradas--')
+
+            for item in resultados:
+                listarUnico(item)
 
 def listarIndisponivel(lista):
     print(f'--Todos os {escopo}s indisponíveis--')
     resultados = []
 
-    for item in lista:
-        if item['disponibilidade'] is not True:
-            resultados.append(item)
+    isEmpty = verificaLista(lista)
 
-    if len(resultados) > 0:
-        print(f'--Ocorrências encontradas--')
+    if not isEmpty:
+        for item in lista:
+            if item['disponibilidade'] is not True:
+                resultados.append(item)
 
-        for item in resultados:
-            listarUnico(item)
+        if len(resultados) > 0:
+            print(f'--Ocorrências encontradas--')
+
+            for item in resultados:
+                listarUnico(item)
 
 def atualizarCarro(lista):
-    print(f'-- Atualizar {escopo}')
-    listarTodos(lista)
-    id = input('Informe o id que deseja atualizar: ')
-    existente = itemExistente(id, lista)
-    if existente == True:
-        print('Para manter dado atual, deixe o campo vazio')
-        modelo = input("Digite o modelo do carro: ")
-        marca = input("Digite a marca do carro: ")
-        ano = int(input("Digite o ano do carro: "))
-        valor = float(input("Digite o valor do carro: "))
-        disponibilidade = input("Digite a disponibilidade do carro (Sim / Não): ").lower().strip() == 'sim'
+    print(f'--Alterar dados de {escopo}--')
 
-        if modelo != '':
-            lista[id]['modelo'] = modelo
+    isChanged = False
+    isEmpty = verificaLista(lista)
 
-        if marca != '':
-            lista[id]['marca'] = marca
-        
-        if ano != '':
-            lista[id]['ano'] = ano
+    if not isEmpty:
+        listarTodos(lista)
+        idd = input('Digite o ID que deseja alterar: ')
+        for item in lista:
+            if idd == item['id']:
+                print('Para não alterar a informação, mantenha a caixa de texto vazia')
+                modelo = input("Digite o modelo do carro: ")
+                marca = input("Digite a marca do carro: ")
+                ano = int(input("Digite o ano do carro (0 para não alterar): "))
+                valor = float(input("Digite o valor do carro (0 para não alterar): "))
+                disponibilidade = input("Digite a disponibilidade do carro (Sim / Não): ").lower().strip() == 'sim'
 
-        if valor != '':
-            lista[id]['valor'] = valor
-        
-        if disponibilidade != lista[id]['disponibilidade']:
-            lista[id]['disponibilidade'] = disponibilidade
+                if modelo.strip() != "":
+                    item['modelo'] = modelo
+                if marca.strip() != "":
+                    item['marca'] = marca
+                if ano > 0:
+                    item['ano'] = ano
+                if valor > 0:
+                    item['valor'] = valor
+                if disponibilidade != item['disponibilidade']:
+                    item['disponibilidade'] = disponibilidade
 
-    print('Item atualizado com sucesso!')
+                print(f'{escopo} alterado com sucesso!')
+
+                isChanged = True
+
+        if not isChanged:
+            print('ID não alterado/encontrado')
+
 
 def excluirCarro(lista):
     print(f'--Excluir {escopo}')
-    listarTodos(lista)
-    id = input('Informe o id que deseja excluir: ')
-    existente = itemExistente(id, lista)
-    if existente:
-        for item in lista:
-            if id == item['id']:
-                lista.remove(item)
 
-    print('Item excluido com sucesso!')
+    isDeleted = False
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        listarTodos(lista)
+        idd = input('Digite o ID que deseja excluir: ')
+        for item in lista:
+            if idd == item['id']:
+                lista.remove(item)
+                print(f'{escopo} excluído com sucesso!')
+                isDeleted = True
+
+        if not isDeleted:
+            print('ID não alterado/encontrado')
         
 
 def visualizarLog(lista_log):
@@ -229,9 +255,6 @@ def visualizarLog(lista_log):
 
     for item in lista_log:
         print(item)
-
-
-
 
 
 
