@@ -46,7 +46,7 @@ def menu(funcoes, lista, lista_log):
                 cadastrar(lista)
             case 2:
                 registrarLog(funcoes[opcao], lista_log)
-                buscarPorNome(lista)
+                buscar(lista, 1)
             case 3:
                 registrarLog(funcoes[opcao], lista_log)
                 listar(lista, 1, None)
@@ -76,7 +76,7 @@ def menu(funcoes, lista, lista_log):
                 contagem(lista)
             case 12:
                 registrarLog(funcoes[opcao], lista_log)
-                print(f'Busca por {atributos[1]}, {atributos[2]}')
+                buscar(lista, False)
             case 13:
                 registrarLog(funcoes[opcao], lista_log)
                 visualizarLog(lista_log)
@@ -132,24 +132,50 @@ def listarUnico(item):
         else:
             print(f"Disponibilidade - Não")
 
-def buscarPorNome(lista):
-    print(f"--Buscar {escopo} por {atributos[1]}--")
-    resultados = []
-
+def buscar(lista, opcao):
     isEmpty = verificaLista(lista)
 
+    if opcao == True:
+        opcao = 1
+
     if not isEmpty:
-        modelo = input("Digite o modelo desejado: ")
+        if opcao == False:
+            print('1 para buscar por modelo, 2 para buscar por marca')
+            opcao = int(input('Escolha a opção desejada: '))
 
-        for item in lista:
-            if (modelo.lower() in item['modelo'].lower()):
-                resultados.append(item)
+        match opcao:
+            case 1:
+                print(f"--Buscar {escopo} por {atributos[1]}--")
+                resultados = []
+                modelo = input(f"Digite o {atributos[1]} desejado: ")
 
-        if (len(resultados) > 0):
-            print(f"--Ocorrências encontradas--")
+                for item in lista:
+                    if (modelo.lower() in item['modelo'].lower()):
+                        resultados.append(item)
 
-            for item in resultados:
-                listarUnico(item)
+                if (len(resultados) > 0):
+                    print(f"--Ocorrências encontradas--")
+
+                    for item in resultados:
+                        listarUnico(item)
+
+            case 2:
+                print(f"--Buscar {escopo} por {atributos[2]}--")
+                resultados = []
+                modelo = input(f"Digite a {atributos[2]} desejado: ")
+
+                for item in lista:
+                    if (modelo.lower() in item['marca'].lower()):
+                        resultados.append(item)
+
+                if (len(resultados) > 0):
+                    print(f"--Ocorrências encontradas--")
+
+                    for item in resultados:
+                        listarUnico(item)
+
+            case _:
+                print('Opção inválida')
 
 def listar(lista, opcao, disponibilidade):
     isEmpty = verificaLista(lista)
@@ -222,7 +248,7 @@ def excluirCarro(lista):
     isEmpty = verificaLista(lista)
 
     if not isEmpty:
-        listarTodos(lista)
+        listar(lista, 1, None)
         idd = input('Digite o ID que deseja excluir(vazio para cancelar): ')
         if idd.strip() != "":
             for item in lista:
