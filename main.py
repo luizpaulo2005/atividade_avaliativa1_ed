@@ -67,10 +67,10 @@ def menu(funcoes, lista, lista_log):
                 mediaValor(lista)
             case 9:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Mais caro')
+                porValor(lista, True)
             case 10:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Mais barato')
+                porValor(lista, False)
             case 11:
                 registrarLog(funcoes[opcao], lista_log)
                 print('Contagem de carros')
@@ -265,6 +265,20 @@ def mediaValor(lista):
 
         print(f'A média de valores dos R${escopo}s é de {media}')
 
+def porValor(lista, ordem):
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        print(f'--{escopo.capitalize()} mais caro--')
+        listaOrdenada = sorted(lista, key=lambda item: item['valor'], reverse=ordem)
+        item = listaOrdenada[0]
+
+        if ordem:
+            msg = 'caro'
+        else:
+            msg = 'barato'
+
+        print(f'O veículo mais {msg} é o {item["modelo"]}, custando R${item["valor"]}')
 
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
