@@ -73,7 +73,7 @@ def menu(funcoes, lista, lista_log):
                 porValor(lista, False)
             case 11:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Contagem de carros')
+                contagem(lista)
             case 12:
                 registrarLog(funcoes[opcao], lista_log)
                 print(f'Busca por {atributos[1]}, {atributos[2]}')
@@ -279,6 +279,13 @@ def porValor(lista, ordem):
             msg = 'barato'
 
         print(f'O veículo mais {msg} é o {item["modelo"]}, custando R${item["valor"]}')
+
+def contagem(lista):
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        print(f'--Contagem de {escopo}s')
+        print(f'A quantidade de {escopo}s cadastrados é de {len(lista)}')
 
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
