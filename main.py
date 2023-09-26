@@ -82,7 +82,7 @@ def menu(funcoes, lista, lista_log):
                 visualizarLog(lista_log)
             case 14:
                 registrarLog(funcoes[opcao], lista_log)
-                print('Lista ordenada')
+                listaOrdenada(lista)
             case _:
                 registrarLog('Opção Inválida', lista_log)
                 print("Opção inválida!")
@@ -286,6 +286,24 @@ def contagem(lista):
     if not isEmpty:
         print(f'--Contagem de {escopo}s')
         print(f'A quantidade de {escopo}s cadastrados é de {len(lista)}')
+
+def listaOrdenada(lista):
+    isEmpty = verificaLista(lista)
+
+    if not isEmpty:
+        opcao = int(input("1 para crescente, 2 para decrescente: "))
+
+        match opcao:
+            case 1:
+                listaCrescente = sorted(lista, key=lambda item: item['modelo'])
+                for item in listaCrescente:
+                    listarUnico(item)
+            case 2:
+                listaDecrescente = sorted(lista, key=lambda item: item['modelo'], reverse=True)
+                for item in listaDecrescente:
+                    listarUnico(item)
+            case _:
+                print('Opção inválida')
 
 def visualizarLog(lista_log):
     print('--Log de Acessos--')
