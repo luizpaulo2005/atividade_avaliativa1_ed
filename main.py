@@ -49,13 +49,13 @@ def menu(funcoes, lista, lista_log):
                 buscarPorNome(lista)
             case 3:
                 registrarLog(funcoes[opcao], lista_log)
-                listarTodos(lista)
+                listar(lista, 1, None)
             case 4:
                 registrarLog(funcoes[opcao], lista_log)
-                listarDisponivel(lista)
+                listar(lista, 2, True)
             case 5:
                 registrarLog(funcoes[opcao], lista_log)
-                listarIndisponivel(lista)
+                listar(lista, 2, False)
             case 6:
                 registrarLog(funcoes[opcao], lista_log)
                 atualizarCarro(lista)
@@ -151,48 +151,32 @@ def buscarPorNome(lista):
             for item in resultados:
                 listarUnico(item)
 
-def listarTodos(lista):
-    print(f'--Todos os {escopo}s cadastrados--')
-    
+def listar(lista, opcao, disponibilidade):
     isEmpty = verificaLista(lista)
+    msg = ""
+
+    if not disponibilidade:
+        msg = 'in'
 
     if not isEmpty:
-        for item in lista:
-            listarUnico(item)
+        match opcao:
+            case 1:
+                print(f'--Todos os {escopo}s cadastrados--')
+                for item in lista:
+                    listarUnico(item)
+            
+            case 2:
+                print(f'--Todos os {escopo}s {msg}disponíveis--')
+                resultados = []
+                for item in lista:
+                    if item['disponibilidade'] == disponibilidade:
+                        resultados.append(item)
 
-def listarDisponivel(lista):
-    print(f'--Todos os {escopo}s disponíveis--')
-    resultados = []
+                if len(resultados) > 0:
+                    print(f'--Ocorrências encontradas--')
 
-    isEmpty = verificaLista(lista)
-
-    if not isEmpty:
-        for item in lista:
-            if item['disponibilidade'] == True:
-                resultados.append(item)
-
-        if len(resultados) > 0:
-            print(f'--Ocorrências encontradas--')
-
-            for item in resultados:
-                listarUnico(item)
-
-def listarIndisponivel(lista):
-    print(f'--Todos os {escopo}s indisponíveis--')
-    resultados = []
-
-    isEmpty = verificaLista(lista)
-
-    if not isEmpty:
-        for item in lista:
-            if item['disponibilidade'] is not True:
-                resultados.append(item)
-
-        if len(resultados) > 0:
-            print(f'--Ocorrências encontradas--')
-
-            for item in resultados:
-                listarUnico(item)
+                    for item in resultados:
+                        listarUnico(item)
 
 def atualizarCarro(lista):
     print(f'--Alterar dados de {escopo}--')
@@ -201,7 +185,7 @@ def atualizarCarro(lista):
     isEmpty = verificaLista(lista)
 
     if not isEmpty:
-        listarTodos(lista)
+        listar(lista, 1, None)
         idd = input('Digite o ID que deseja alterar: ')
         for item in lista:
             if idd == item['id']:
@@ -310,8 +294,5 @@ def visualizarLog(lista_log):
 
     for item in lista_log:
         print(item)
-
-
-
 
 menu(functions, carros, log)
