@@ -19,15 +19,15 @@ log = []
 functions = [
     "Sair",
     f"Cadastrar {escopo}",
-    f"Buscar {escopo} por {atributos[1]}",
+    f"Buscar {escopo} por {atributos[0]}",
     f"Listar todos {escopo}s",
     f"Listar todos {escopo}s disponíveis",
     f"Listar todos {escopo}s indisponíveis",
     f"Atualizar {escopo}",
     f"Excluir {escopo}",
     f"Média de valor dos {escopo}s",
-    f"{escopo} mais caro",
-    f"{escopo} mais barato",
+    f"{escopo.capitalize()} mais caro",
+    f"{escopo.capitalize()} mais barato",
     f"Contagem de {escopo}s",
     f"Busca por {atributos[1], atributos[2]}",
     f"Log de acesso",
@@ -52,7 +52,7 @@ def menu(funcoes, lista, lista_log):
                 cadastrar(lista)
             case 2:
                 registrarLog(funcoes[opcao], lista_log)
-                buscar(lista, 1)
+                buscar(lista, True)
             case 3:
                 registrarLog(funcoes[opcao], lista_log)
                 listar(lista, 1, None)
@@ -138,18 +138,33 @@ def listarUnico(item):
         else:
             print(f"Disponibilidade - Não")
 
-def buscar(lista, opcao):
+def buscar(lista, unico):
     isEmpty = verificaLista(lista)
 
-    if opcao == True:
-        opcao = 1
+    if unico == True:
+        opcao = 0
 
     if not isEmpty:
-        if opcao == False:
+        if unico == False:
             print('1 para buscar por modelo, 2 para buscar por marca')
             opcao = int(input('Escolha a opção desejada: '))
 
         match opcao:
+            case 0:
+                print(f"--Buscar {escopo} por {atributos[0]}--")
+                resultados = []
+                idd = input(f"Digite o {atributos[0]} desejado: ")
+
+                for item in lista:
+                    if (idd.lower() in item['id'].lower()):
+                        resultados.append(item)
+
+                if (len(resultados) > 0):
+                    print(f"--Ocorrências encontradas--")
+
+                    for item in resultados:
+                        listarUnico(item)
+
             case 1:
                 print(f"--Buscar {escopo} por {atributos[1]}--")
                 resultados = []
@@ -168,10 +183,10 @@ def buscar(lista, opcao):
             case 2:
                 print(f"--Buscar {escopo} por {atributos[2]}--")
                 resultados = []
-                modelo = input(f"Digite a {atributos[2]} desejado: ")
+                marca = input(f"Digite a {atributos[2]} desejado: ")
 
                 for item in lista:
-                    if (modelo.lower() in item['marca'].lower()):
+                    if (marca.lower() in item['marca'].lower()):
                         resultados.append(item)
 
                 if (len(resultados) > 0):
