@@ -7,7 +7,13 @@ from datetime import datetime
 escopo = "carro"
 atributos = ["id", "modelo", "marca", "ano", "valor", "disponibilidade"]    
 
-carros = []
+carros = [
+    {"id": "f51f6753-dc17-4990-a84e-a915bc5278eb","modelo": "Jetta GLI", "marca": "Volkswagen", "ano": 2023, "valor": 250000, "disponibilidade": True},
+    {"id": "67b5c27b-08f7-4e4a-a932-a5686f557fe4","modelo": "Polo GTS", "marca": "Volkswagen", "ano": 2023, "valor": 150000, "disponibilidade": True},
+    {"id": "0a1a0555-b2f7-4a76-8978-24d3cc5b2131","modelo": "A3", "marca": "Audi", "ano": 2015, "valor": 90000, "disponibilidade": False},
+    {"id": "270016ee-7c18-41fd-bc44-c3219b08362e","modelo": "Renegade Sport", "marca": "Jeep", "ano": 2023, "valor": 114000, "disponibilidade": False},
+    {"id": "88e0d899-df60-47c1-a9a3-0d9b7b505be8","modelo": "Passat TSI", "marca": "Volkswagen", "ano": 2014, "valor": 76000, "disponibilidade": True},
+]
 log = []
 
 functions = [
